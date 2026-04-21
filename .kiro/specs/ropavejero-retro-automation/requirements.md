@@ -12,8 +12,8 @@ El sistema se implementa como un proyecto de **Google Apps Script** vinculado a 
 
 - **Sistema**: El proyecto de Google Apps Script que implementa la automatización de inventario de Ropavejero.Retro.
 - **ID_Producto**: Identificador único alfanumérico de un artículo en el inventario de la tienda.
-- **Hoja_Ventas**: Hoja de cálculo de Google Sheets ubicada en `https://docs.google.com/spreadsheets/d/1DbC75pvXfWAWSqLoXMDvgN1CWT1n1xXq/`, que registra el historial de ventas.
-- **Hoja_Disponibles**: Hoja de cálculo de Google Sheets ubicada en `https://docs.google.com/spreadsheets/d/18kZ6wyheBWMmoa5yb1PR_XqhqzHCTAlT/`, que lista los productos disponibles para la venta.
+- **Hoja_Ventas**: Hoja de cálculo de Google Sheets ubicada en `https://docs.google.com/spreadsheets/d/1kUTZQhP7A1qsrPtjSDq7p4XCuvBtCu5RW1bQWWYgVQA/`, que registra el historial de ventas.
+- **Hoja_Disponibles**: Hoja de cálculo de Google Sheets ubicada en `https://docs.google.com/spreadsheets/d/1ZDQQFeCeL3gw2qgO5_xusTKP0GiY94XVTnR_Amphbek/`, que lista los productos disponibles para la venta.
 - **Shortcode**: Identificador corto de un post de Instagram, extraído de la URL del post (columna G de la Hoja_Disponibles).
 - **Media_Object_ID**: Identificador numérico del post de Instagram obtenido a partir del Shortcode mediante la Instagram Graph API.
 - **Caption**: Texto descriptivo de un post de Instagram que incluye la línea de disponibilidad del producto.

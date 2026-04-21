@@ -2,7 +2,7 @@
 // Responsabilidad: Búsqueda, actualización y lectura de shortcode en Hoja_Disponibles.
 // Proyecto: Ropavejero.Retro — Automatización de Inventario
 
-var URL_HOJA_DISPONIBLES = 'https://docs.google.com/spreadsheets/d/18kZ6wyheBWMmoa5yb1PR_XqhqzHCTAlT/';
+var URL_HOJA_DISPONIBLES = 'https://docs.google.com/spreadsheets/d/1ZDQQFeCeL3gw2qgO5_xusTKP0GiY94XVTnR_Amphbek/';
 
 /**
  * Busca el ID_Producto en la columna A de la hoja "Disponibles", marca la fila

@@ -2,7 +2,7 @@
 // Responsabilidad: Búsqueda y actualización de filas en Hoja_Ventas.
 // Proyecto: Ropavejero.Retro — Automatización de Inventario
 
-var URL_HOJA_VENTAS = 'https://docs.google.com/spreadsheets/d/1DbC75pvXfWAWSqLoXMDvgN1CWT1n1xXq/';
+var URL_HOJA_VENTAS = 'https://docs.google.com/spreadsheets/d/1kUTZQhP7A1qsrPtjSDq7p4XCuvBtCu5RW1bQWWYgVQA/';
 
 /**
  * Busca el ID_Producto en la columna B de la hoja "Ventas" y actualiza las
