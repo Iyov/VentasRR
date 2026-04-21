@@ -36,7 +36,7 @@ npm install
 clasp login
 ```
 
-3. Crear archivo `.clasp.json` en la raíz y reemplazar `YOUR_SCRIPT_ID_HERE` con el ID del proyecto de Apps Script [script.google.com] vinculado a la hoja de cálculo:
+3. Crear archivo `.clasp.json` en la raíz y reemplazar `YOUR_SCRIPT_ID_HERE` con el ID del proyecto de [Google Apps Script](https://script.google.com/) vinculado a la hoja de cálculo:
 
 ```json
 {
