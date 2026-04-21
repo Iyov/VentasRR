@@ -1,0 +1,16 @@
+{
+  "name": "ropavejero-retro-automation",
+  "version": "1.0.0",
+  "description": "Automatización de inventario y posts de Instagram para Ropavejero.Retro",
+  "scripts": {
+    "test": "jest",
+    "test:watch": "jest --watch",
+    "push": "clasp push",
+    "pull": "clasp pull"
+  },
+  "devDependencies": {
+    "@types/google-apps-script": "^1.0.83",
+    "fast-check": "^3.22.0",
+    "jest": "^29.7.0"
+  }
+}
