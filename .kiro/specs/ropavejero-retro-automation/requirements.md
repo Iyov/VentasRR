@@ -17,7 +17,7 @@ El sistema se implementa como un proyecto de **Google Apps Script** vinculado a 
 - **Shortcode**: Identificador corto de un post de Instagram, extraído de la URL del post (columna G de la Hoja_Disponibles).
 - **Media_Object_ID**: Identificador numérico del post de Instagram obtenido a partir del Shortcode mediante la Instagram Graph API.
 - **Caption**: Texto descriptivo de un post de Instagram que incluye la línea de disponibilidad del producto.
-- **Línea_Disponibilidad**: Línea dentro del Caption que contiene el ID_Producto y el estado `[✅]: DISPONIBLE` o `[❌]: VENDIDO`.
+- **Línea_Disponibilidad**: Línea dentro del Caption que comienza con `[✅]` (disponible) o `[❌]` (vendido) seguido del ID_Producto y el resto de la descripción del artículo. Ejemplo: `[✅] 4091 NBA Live 2005 (CIB) [Xbox] $5K`.
 - **Access_Token**: Token de acceso de larga duración para la Instagram Graph API, almacenado en las propiedades del script.
 - **IG_Business_Account_ID**: Identificador de la cuenta de Instagram Business, almacenado en las propiedades del script.
 - **Configurador**: Función de Google Apps Script que permite al usuario guardar el Access_Token y el IG_Business_Account_ID.
@@ -125,11 +125,11 @@ El sistema se implementa como un proyecto de **Google Apps Script** vinculado a 
 #### Criterios de Aceptación
 
 1. WHEN el Media_Object_ID es obtenido, THE Sistema SHALL realizar una petición GET a `/{media-object-id}?fields=caption` de la Instagram Graph API para obtener el Caption actual del post.
-2. WHEN el Caption actual es obtenido, THE Sistema SHALL localizar dentro del Caption la Línea_Disponibilidad que contenga el ID_Producto seguido del texto `[✅]: DISPONIBLE`.
-3. WHEN la Línea_Disponibilidad es localizada, THE Sistema SHALL reemplazar el texto `[✅]: DISPONIBLE` por `[❌]: VENDIDO` en esa línea, manteniendo el resto del Caption sin modificaciones.
+2. WHEN el Caption actual es obtenido, THE Sistema SHALL localizar dentro del Caption la Línea_Disponibilidad que comience con `[✅]` seguido del ID_Producto.
+3. WHEN la Línea_Disponibilidad es localizada, THE Sistema SHALL reemplazar únicamente el ícono `[✅]` al inicio de esa línea por `[❌]`, manteniendo el resto de la línea y del Caption sin modificaciones.
 4. WHEN el Caption modificado está listo, THE Sistema SHALL realizar una petición POST al endpoint `/{media-object-id}` de la Instagram Graph API con el campo `caption` actualizado y el Access_Token.
 5. WHEN la petición POST retorna una respuesta exitosa (HTTP 200), THE Sistema SHALL registrar en el log el Media_Object_ID actualizado y el ID_Producto correspondiente.
-6. IF la Línea_Disponibilidad con `[✅]: DISPONIBLE` no es encontrada en el Caption, THEN THE Sistema SHALL registrar una advertencia en el log indicando que la línea de disponibilidad no fue localizada para el ID_Producto y SHALL omitir la petición POST.
+6. IF la Línea_Disponibilidad con `[✅]` seguido del ID_Producto no es encontrada en el Caption, THEN THE Sistema SHALL registrar una advertencia en el log indicando que la línea de disponibilidad no fue localizada para el ID_Producto y SHALL omitir la petición POST.
 7. IF la petición POST a la Instagram Graph API retorna un código de error HTTP (4xx o 5xx), THEN THE Sistema SHALL registrar el código de error y el mensaje de respuesta en el log y SHALL notificar al usuario que la actualización de Instagram falló.
 
 ---

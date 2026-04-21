@@ -25,12 +25,12 @@
 
 ## Overview
 
-El sistema **Ropavejero.Retro Automation** es un proyecto de Google Apps Script que automatiza el flujo de registro de ventas de una tienda de videojuegos retro. Al ingresar un único `ID_Producto`, el sistema:
+El sistema **Ropavejero.Retro Autómatización** es un proyecto de Google Apps Script que automatiza el flujo de registro de ventas de una tienda de videojuegos retro. Al ingresar un único `ID_Producto`, el sistema:
 
 1. Valida los datos de la venta.
 2. Actualiza la fila correspondiente en la **Hoja_Ventas** (historial de ventas).
 3. Marca el producto como vendido en la **Hoja_Disponibles** (inventario activo) y extrae el shortcode del post de Instagram.
-4. Localiza el post en Instagram mediante la Graph API, obtiene su caption actual, reemplaza `[✅]: DISPONIBLE` por `[❌]: VENDIDO` y publica el caption actualizado.
+4. Localiza el post en Instagram mediante la Graph API, obtiene su caption actual, reemplaza el ícono `[✅]` por `[❌]` en la línea que contiene el `ID_Producto` y publica el caption actualizado.
 
 Todo el proceso se ejecuta desde un menú personalizado dentro de Google Sheets, sin necesidad de abrir el editor de scripts.
 
@@ -188,15 +188,27 @@ Trigger automático de Google Apps Script. Crea el Menú_Personalizado "Ropaveje
 
 ### Formato de Línea_Disponibilidad en Caption
 
+El caption de Instagram contiene líneas con el siguiente formato:
+
 ```
-{ID_Producto} [✅]: DISPONIBLE   →   {ID_Producto} [❌]: VENDIDO
+[✅] 4089 Fifa 16 (MM) [X360] $6K
+[❌] 4090 NBA 2K13 (CIB) [X360] $5K
+[✅] 4091 NBA Live 2005 (CIB) [Xbox] $5K
+```
+
+Donde `[✅]` indica producto disponible y `[❌]` indica producto vendido. Al registrar una venta, **solo se reemplaza el ícono al inicio de la línea** que contiene el `ID_Producto`; el resto de la línea permanece idéntico.
+
+```
+[✅] 4091 NBA Live 2005 (CIB) [Xbox] $5K
+        ↓
+[❌] 4091 NBA Live 2005 (CIB) [Xbox] $5K
 ```
 
 La sustitución se realiza con una expresión regular que localiza la línea exacta:
 
 ```javascript
-const regex = new RegExp(`(${escapeRegex(idProducto)}\\s*\\[✅\\]:\\s*DISPONIBLE)`, 'g');
-caption = caption.replace(regex, `${idProducto} [❌]: VENDIDO`);
+const regex = new RegExp(`\\[✅\\](\\s+${escapeRegex(idProducto)}\\b.*)`, 'g');
+caption = caption.replace(regex, `[❌]$1`);
 ```
 
 ---
@@ -274,7 +286,7 @@ Cuando `procesarVenta` falla en un paso intermedio, el log registra explícitame
 
 ### Propiedad 5: Sustitución de Línea_Disponibilidad preserva el resto del caption
 
-*Para cualquier* caption de Instagram que contenga la Línea_Disponibilidad `{ID_Producto} [✅]: DISPONIBLE`, la función de sustitución SHALL producir un caption donde únicamente esa línea cambia a `{ID_Producto} [❌]: VENDIDO`, y el resto del texto del caption SHALL permanecer byte a byte idéntico.
+*Para cualquier* caption de Instagram que contenga una línea con el formato `[✅] {ID_Producto} ...`, la función de sustitución SHALL producir un caption donde únicamente el ícono `[✅]` al inicio de esa línea cambia a `[❌]`, y el resto del texto de la línea y del caption SHALL permanecer byte a byte idéntico.
 
 **Valida: Requisito 7.2, 7.3**
 
