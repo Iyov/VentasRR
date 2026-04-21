@@ -4,8 +4,9 @@ node_modules/
 # Coverage
 coverage/
 
-# clasp credentials
+# clasp credentials and project config
 .clasprc.json
+.clasp.json
 
 # Environment / secrets
 .env

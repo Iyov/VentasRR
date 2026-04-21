@@ -36,7 +36,7 @@ npm install
 clasp login
 ```
 
-3. Abrir `.clasp.json` y reemplazar `YOUR_SCRIPT_ID_HERE` con el ID del proyecto de Apps Script vinculado a la hoja de cálculo:
+3. Crear archivo `.clasp.json` en la raíz y reemplazar `YOUR_SCRIPT_ID_HERE` con el ID del proyecto de Apps Script [script.google.com] vinculado a la hoja de cálculo:
 
 ```json
 {
@@ -50,7 +50,7 @@ El Script ID se encuentra en el editor de Apps Script bajo **Configuración del 
 4. Subir el código al proyecto de Apps Script:
 
 ```bash
-npm run push
+clasp push
 ```
 
 ---
