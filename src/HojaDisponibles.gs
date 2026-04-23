@@ -41,6 +41,9 @@ function buscarYActualizarHojaDisponibles(idProducto) {
   // Marcar como vendido en columna H
   sheet.getRange(rowIndex, 8).setValue(1);
 
+  // Aplicar color "verde claro 3" (#d9ead3) en columnas A–H para indicar producto vendido
+  sheet.getRange(rowIndex, 1, 1, 8).setBackground('#d9ead3');
+
   // Leer shortcode de columna G
   var shortcode = sheet.getRange(rowIndex, 7).getValue();
 

@@ -52,6 +52,9 @@ function buscarYActualizarHojaVentas(idProducto, datos) {
   sheet.getRange(rowIndex, 15).setValue(datos.Estado_Entrega);// O: Entreg
   sheet.getRange(rowIndex, 16).setValue(datos.Monto_Pagado);  // P: Pago
 
+  // Aplicar color "verde claro 3" (#d9ead3) en columnas B–P para indicar producto vendido
+  sheet.getRange(rowIndex, 2, 1, 15).setBackground('#d9ead3');
+
   logInfo('HojaVentas actualizada — Fila: ' + rowIndex + ', ID_Producto: ' + idProducto);
 }
 
