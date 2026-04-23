@@ -50,7 +50,14 @@ El sistema se implementa como un proyecto de **Google Apps Script** vinculado a 
 
 1. WHEN Google Sheets carga el archivo, THE Sistema SHALL crear automáticamente un Menú_Personalizado llamado "Ropavejero.Retro" en la barra de menús mediante el evento `onOpen`.
 2. THE Menú_Personalizado SHALL contener al menos las opciones: "Registrar Venta", "Configurar Credenciales" y "Ver Logs".
-3. WHEN el usuario selecciona "Registrar Venta" desde el Menú_Personalizado, THE Sistema SHALL abrir un formulario con todos los campos de `DatosVenta`, donde el campo `Metodo_Pago` se presenta como un comboBox con las opciones: BcoBCI, BcoChile, BcoEstado, Efectivo, MercadoPago, Pagado, SumUp, Tenpo.
+3. WHEN el usuario selecciona "Registrar Venta" desde el Menú_Personalizado, THE Sistema SHALL abrir un formulario con todos los campos de `DatosVenta` con las siguientes características:
+   - `ID_Producto`: campo de texto libre (obligatorio).
+   - `User_IG` (UserId): campo editable con lista de sugerencias: "Vendido en Bio Bio", "Vendido en Friki", "Vendido en MC", "Vendido en Otagamer", "Vendido en Paño", "Vendido en Retro", "NoFunciona", "Perdido", "Permutado", "Regalado", "Robado".
+   - `Nombre_Cliente`: campo editable con lista de sugerencias: "Vendido en Bio Bio", "Vendido en Friki", "Vendido en MataControles", "Vendido en Otagamer", "Vendido en Paño", "Vendido en Retro", "No Funciona", "Perdido", "Permutado", "Regalado", "Robado".
+   - `Metodo_Pago`: comboBox fijo con opciones: BcoBCI, BcoChile, BcoEstado, Efectivo, MercadoPago, Pagado, SumUp, Tenpo.
+   - `Monto_Pagado`: campo numérico (obligatorio).
+   - `Fecha`: selector de fecha nativo que convierte automáticamente al formato `dd/mmm/aa` (obligatorio).
+   - `Estado_Entrega`: comboBox con opciones "Entregado" (valor `1`) y "Por entregar" (valor `0`).
 4. WHEN el usuario selecciona "Configurar Credenciales" desde el Menú_Personalizado, THE Sistema SHALL ejecutar la función `configurarCredenciales()`.
 
 ---

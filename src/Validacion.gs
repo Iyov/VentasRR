@@ -9,6 +9,12 @@
 var METODOS_PAGO_VALIDOS = ['BcoBCI', 'BcoChile', 'BcoEstado', 'Efectivo', 'MercadoPago', 'Pagado', 'SumUp', 'Tenpo'];
 
 /**
+ * Valores válidos para Estado_Entrega (O).
+ * Debe mantenerse sincronizado con OPCIONES_ENTREGA en Menu.gs.
+ */
+var ESTADOS_ENTREGA_VALIDOS = ['0', '1', ''];
+
+/**
  * Valida los campos obligatorios de un objeto DatosVenta.
  * Lanza un Error descriptivo si algún campo es inválido.
  * El éxito es implícito (no retorna valor).
@@ -54,6 +60,14 @@ function validarDatosVenta(datos) {
       throw new Error(
         'Metodo_Pago inválido. Opciones válidas: ' + METODOS_PAGO_VALIDOS.join(', ')
       );
+    }
+  }
+
+  // Estado_Entrega debe ser '0', '1' o vacío (si se proporciona)
+  if (datos.Estado_Entrega !== undefined && datos.Estado_Entrega !== null) {
+    var entrega = String(datos.Estado_Entrega);
+    if (ESTADOS_ENTREGA_VALIDOS.indexOf(entrega) === -1) {
+      throw new Error('Estado_Entrega inválido. Valores válidos: 1 (Entregado), 0 (Por entregar)');
     }
   }
 }
