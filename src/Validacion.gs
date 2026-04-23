@@ -3,6 +3,12 @@
 // Proyecto: Ropavejero.Retro — Automatización de Inventario
 
 /**
+ * Opciones válidas para el método de pago.
+ * Debe mantenerse sincronizado con METODOS_PAGO en Menu.gs.
+ */
+var METODOS_PAGO_VALIDOS = ['BcoBCI', 'BcoChile', 'BcoEstado', 'Efectivo', 'MercadoPago', 'Pagado', 'SumUp', 'Tenpo'];
+
+/**
  * Valida los campos obligatorios de un objeto DatosVenta.
  * Lanza un Error descriptivo si algún campo es inválido.
  * El éxito es implícito (no retorna valor).
@@ -40,6 +46,15 @@ function validarDatosVenta(datos) {
   // Verificación adicional: NaN puede llegar como resultado de operaciones
   if (isNaN(datos.Monto_Pagado)) {
     throw new Error('Monto_Pagado debe ser un valor numérico');
+  }
+
+  // Requisito 3: Metodo_Pago debe ser uno de los valores permitidos (si se proporciona)
+  if (datos.Metodo_Pago && datos.Metodo_Pago.trim() !== '') {
+    if (METODOS_PAGO_VALIDOS.indexOf(datos.Metodo_Pago) === -1) {
+      throw new Error(
+        'Metodo_Pago inválido. Opciones válidas: ' + METODOS_PAGO_VALIDOS.join(', ')
+      );
+    }
   }
 }
 

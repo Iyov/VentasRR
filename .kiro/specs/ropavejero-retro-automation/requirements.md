@@ -50,7 +50,7 @@ El sistema se implementa como un proyecto de **Google Apps Script** vinculado a 
 
 1. WHEN Google Sheets carga el archivo, THE Sistema SHALL crear automáticamente un Menú_Personalizado llamado "Ropavejero.Retro" en la barra de menús mediante el evento `onOpen`.
 2. THE Menú_Personalizado SHALL contener al menos las opciones: "Registrar Venta", "Configurar Credenciales" y "Ver Logs".
-3. WHEN el usuario selecciona "Registrar Venta" desde el Menú_Personalizado, THE Sistema SHALL abrir un formulario o cuadro de diálogo para ingresar los Datos_Venta.
+3. WHEN el usuario selecciona "Registrar Venta" desde el Menú_Personalizado, THE Sistema SHALL abrir un formulario con todos los campos de `DatosVenta`, donde el campo `Metodo_Pago` se presenta como un comboBox con las opciones: BcoBCI, BcoChile, BcoEstado, Efectivo, MercadoPago, Pagado, SumUp, Tenpo.
 4. WHEN el usuario selecciona "Configurar Credenciales" desde el Menú_Personalizado, THE Sistema SHALL ejecutar la función `configurarCredenciales()`.
 
 ---

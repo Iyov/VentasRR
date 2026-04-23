@@ -18,72 +18,70 @@ function onOpen() {
 }
 
 /**
- * Abre un formulario secuencial de cuadros de diálogo para recopilar los datos de la venta.
- * Si el usuario cancela algún campo obligatorio (ID_Producto, Monto_Pagado, Fecha),
- * muestra un mensaje de error y cancela el proceso.
- * Al completar todos los campos, construye el objeto DatosVenta y llama a procesarVenta(datos).
+ * Opciones válidas para el método de pago.
+ */
+var METODOS_PAGO = ['BcoBCI', 'BcoChile', 'BcoEstado', 'Efectivo', 'MercadoPago', 'Pagado', 'SumUp', 'Tenpo'];
+
+/**
+ * Abre un formulario HTML con todos los campos de la venta, incluyendo
+ * un comboBox para el Método de Pago.
+ * Al enviar, construye el objeto DatosVenta y llama a procesarVenta(datos).
  *
  * Requisitos: 2.3
  */
 function abrirFormularioVenta() {
-  var cancelValue = Browser.Buttons.CANCEL;
+  var opcionesPago = METODOS_PAGO.map(function(m) {
+    return '<option value="' + m + '">' + m + '</option>';
+  }).join('');
 
-  // ID_Producto (obligatorio)
-  var idProducto = Browser.inputBox('Ingrese el ID del Producto:');
-  if (idProducto === cancelValue || idProducto.trim() === '') {
-    SpreadsheetApp.getUi().alert('Error: El ID del Producto es obligatorio. Operación cancelada.');
-    return;
-  }
+  var html = HtmlService.createHtmlOutput(
+    '<!DOCTYPE html>' +
+    '<html><head>' +
+    '<style>' +
+    'body{font-family:Arial,sans-serif;font-size:13px;padding:12px;margin:0}' +
+    'label{display:block;margin-top:10px;font-weight:bold}' +
+    'input,select{width:100%;padding:5px;box-sizing:border-box;margin-top:3px}' +
+    '.required{color:red}' +
+    'button{margin-top:14px;padding:7px 18px;cursor:pointer}' +
+    '#btnOk{background:#4285f4;color:#fff;border:none;border-radius:3px}' +
+    '#btnCancelar{background:#e0e0e0;border:none;border-radius:3px;margin-left:8px}' +
+    '</style></head><body>' +
+    '<label>ID Producto <span class="required">*</span><input id="idProducto" type="text" autofocus></label>' +
+    '<label>Usuario Instagram<input id="userIG" type="text"></label>' +
+    '<label>Nombre Cliente<input id="nombreCliente" type="text"></label>' +
+    '<label>Método de Pago' +
+    '<select id="metodoPago"><option value="">-- Seleccionar --</option>' + opcionesPago + '</select></label>' +
+    '<label>Monto Pagado <span class="required">*</span><input id="montoPagado" type="number" min="0"></label>' +
+    '<label>Fecha <span class="required">*</span><input id="fecha" type="text" placeholder="15/ene/25"></label>' +
+    '<label>Estado Entrega<input id="estadoEntrega" type="text"></label>' +
+    '<div><button id="btnOk" onclick="enviar()">Registrar Venta</button>' +
+    '<button id="btnCancelar" onclick="google.script.host.close()">Cancelar</button></div>' +
+    '<script>' +
+    'function enviar(){' +
+    '  var id=document.getElementById("idProducto").value.trim();' +
+    '  if(!id){alert("El ID del Producto es obligatorio.");return;}' +
+    '  var monto=document.getElementById("montoPagado").value;' +
+    '  if(monto===""||isNaN(parseFloat(monto))){alert("El Monto Pagado es obligatorio y debe ser numérico.");return;}' +
+    '  var fecha=document.getElementById("fecha").value.trim();' +
+    '  if(!fecha){alert("La Fecha es obligatoria.");return;}' +
+    '  var datos={' +
+    '    ID_Producto:id,' +
+    '    User_IG:document.getElementById("userIG").value,' +
+    '    Nombre_Cliente:document.getElementById("nombreCliente").value,' +
+    '    Metodo_Pago:document.getElementById("metodoPago").value,' +
+    '    Monto_Pagado:parseFloat(monto),' +
+    '    Fecha:fecha,' +
+    '    Estado_Entrega:document.getElementById("estadoEntrega").value' +
+    '  };' +
+    '  google.script.run.withSuccessHandler(function(){google.script.host.close();})' +
+    '    .withFailureHandler(function(e){alert("Error: "+e.message);})' +
+    '    .procesarVenta(datos);' +
+    '}' +
+    '</script>' +
+    '</body></html>'
+  ).setWidth(360).setHeight(440).setTitle('Registrar Venta');
 
-  // User_IG (opcional)
-  var userIG = Browser.inputBox('Ingrese el usuario de Instagram del comprador (opcional):');
-  if (userIG === cancelValue) {
-    userIG = '';
-  }
-
-  // Nombre_Cliente (opcional)
-  var nombreCliente = Browser.inputBox('Ingrese el nombre del cliente (opcional):');
-  if (nombreCliente === cancelValue) {
-    nombreCliente = '';
-  }
-
-  // Metodo_Pago (opcional)
-  var metodoPago = Browser.inputBox('Ingrese el método de pago (opcional):');
-  if (metodoPago === cancelValue) {
-    metodoPago = '';
-  }
-
-  // Monto_Pagado (obligatorio)
-  var montoPagadoStr = Browser.inputBox('Ingrese el monto pagado:');
-  if (montoPagadoStr === cancelValue || montoPagadoStr.trim() === '') {
-    SpreadsheetApp.getUi().alert('Error: El Monto Pagado es obligatorio. Operación cancelada.');
-    return;
-  }
-
-  // Fecha (obligatorio)
-  var fecha = Browser.inputBox('Ingrese la fecha de la venta (formato dd/mmm/aa, ej: 15/ene/25):');
-  if (fecha === cancelValue || fecha.trim() === '') {
-    SpreadsheetApp.getUi().alert('Error: La Fecha es obligatoria. Operación cancelada.');
-    return;
-  }
-
-  // Estado_Entrega (opcional)
-  var estadoEntrega = Browser.inputBox('Ingrese el estado de entrega (opcional):');
-  if (estadoEntrega === cancelValue) {
-    estadoEntrega = '';
-  }
-
-  var datos = {
-    ID_Producto: idProducto.trim(),
-    User_IG: userIG,
-    Nombre_Cliente: nombreCliente,
-    Metodo_Pago: metodoPago,
-    Monto_Pagado: parseFloat(montoPagadoStr),
-    Fecha: fecha.trim(),
-    Estado_Entrega: estadoEntrega,
-  };
-
-  procesarVenta(datos);
+  SpreadsheetApp.getUi().showModalDialog(html, 'Registrar Venta');
 }
 
 /**
